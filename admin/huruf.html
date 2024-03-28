@@ -65,10 +65,11 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item " href="angka.html">Data Angka</a>
-                        <a class="collapse-item active" href="huruf.html">Data Huruf</a>
-                        <!-- <a class="collapse-item" href="warna.html">Data Warna</a> -->
-                        <a class="collapse-item" href="hewan.html">Data Hewan</a>
+                        <a class="collapse-item" href="../admin/angka.html">Data Angka</a>
+                        <a class="collapse-item active" href="../admin/huruf.html">Data Huruf</a>
+                        <a class="collapse-item" href="../admin/hewan.html">Data Hewan</a>
+                        <a class="collapse-item" href="../admin/buah.html">Data Buah</a>
+                        <a class="collapse-item" href="../admin/kuis.html">Data Kuis</a>
                     </div>
                 </div>
             </li>
@@ -150,15 +151,7 @@
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
-                                    <!-- <tfoot>
-                                        <tr class="text-center">
-                                            <th>Angka</th>
-                                            <th>Audio</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </tfoot> -->
-                                    
-                                    <tbody id="hurufList">
+                                    <tbody id="huruf">
                                    
                                     </tbody>
                                 </table>
@@ -192,6 +185,64 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
+      <!-- Form Tambah Angka Huruf -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="hurufForm">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Data Huruf</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="huruf" class="form-label">Huruf</label>
+                        <input type="text" class="form-control" id="huruf">
+                    </div>
+                    <div class="mb-3">
+                        <label for="audio" class="form-label">Audio</label>
+                        <input type="file" class="form-control" id="audio" accept="audio/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Huruf -->
+    <div class="modal fade" id="editHurufModal" tabindex="-1" aria-labelledby="editHurufModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="editAngkaModalLabel">Edit Huruf</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editHurufForm">
+            <div class="modal-body">
+                <input type="hidden" id="editHurufDocId" name="docId">
+
+                <div class="mb-3">
+                    <label for="editHuruf" class="form-label">Huruf</label>
+                    <input type="text" class="form-control" id="editHuruf" name="huruf">
+                </div>
+                <div class="mb-3">
+                    <label for="editAudio" class="form-label">Audio</label>
+                    <input type="text" class="form-control" id="editAudio" name="audio">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+            </form>
+        </div>
+        </div>
+    </div>
 
      <!-- Logout Modal-->
      <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

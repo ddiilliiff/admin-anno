@@ -49,11 +49,11 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <!-- <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
-            </li> -->
+            </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
@@ -64,7 +64,7 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item active" href="../admin/angka.html">Data Angka</a>
+                        <a class="collapse-item" href="../admin/angka.html">Data Angka</a>
                         <a class="collapse-item" href="../admin/huruf.html">Data Huruf</a>
                         <a class="collapse-item" href="../admin/hewan.html">Data Hewan</a>
                         <a class="collapse-item" href="../admin/buah.html">Data Buah</a>
@@ -129,42 +129,56 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex justify-content-between">
-                            <h5 class="m-0 font-weight-bold text-dark">Data Angka</h5>
-                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                            type="button">
-                                <i class="fas fa-plus"></i>
-                                Tambah Angka
-                            </button>
+                    <!-- <div class="container"> -->
+                        <div class="row justify-content-center mt-5">
+                            <div class="col-md-2">
+                                <div class="card mb-3">
+                                  <div class="card-body">
+                                    <h5 class="card-title">Angka</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Jumlah Data:</h6>
+                                    <h3 id="angkaCount">Loading...</h3>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-2">
+                                <div class="card mb-3">
+                                  <div class="card-body">
+                                    <h5 class="card-title">Huruf</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Jumlah Data:</h6>
+                                    <h3 id="hurufCount">Loading...</h3>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-2">
+                                <div class="card mb-3">
+                                  <div class="card-body">
+                                    <h5 class="card-title">Buah</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Jumlah Data:</h6>
+                                    <h3 id="buahCount">Loading...</h3>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-2">
+                                <div class="card mb-3">
+                                  <div class="card-body">
+                                    <h5 class="card-title">Hewan</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Jumlah Data:</h6>
+                                    <h3 id="hewanCount">Loading...</h3>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-2">
+                                <div class="card mb-3">
+                                  <div class="card-body">
+                                    <h5 class="card-title">Kuis</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Jumlah Data:</h6>
+                                    <h3 id="kuisCount">Loading...</h3>
+                                  </div>
+                                </div>
+                              </div>
+                          
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped" id="angkaTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr class="text-center">
-                                            <!-- <th>Id-Data</th> -->
-                                            <th>Angka</th>
-                                            <th>Audio</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <!-- <tfoot>
-                                        <tr class="text-center">
-                                            <th>Angka</th>
-                                            <th>Audio</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </tfoot> -->
-                                    
-                                    <tbody id="angka">
-                                   
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                      <!-- </div> -->
 
                 </div>
                 <!-- /.container-fluid -->
@@ -192,65 +206,6 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-    <!-- Form Tambah Angka Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="angkaForm">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Data Angka</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="angka" class="form-label">Angka</label>
-                        <input type="number" class="form-control" id="angka">
-                    </div>
-                    <div class="mb-3">
-                        <label for="audio" class="form-label">Audio</label>
-                        <input type="file" class="form-control" id="audio" accept="audio/*">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
-                </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Edit Angka -->
-    <div class="modal fade" id="editAngkaModal" tabindex="-1" aria-labelledby="editAngkaModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="editAngkaModalLabel">Edit Angka</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="editAngkaForm">
-                <div class="modal-body">
-                    <input type="hidden" id="editAngkaDocId" name="docId">
-            
-                    <div class="mb-3">
-                        <label for="editAngka" class="form-label">Angka</label>
-                        <input type="text" class="form-control" id="editAngka" name="angka" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editAudio" class="form-label">Audio</label>
-                        <input type="file" class="form-control" id="editAudio" name="audio">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                </div>
-            </form>
-            
-        </div>
-        </div>
-    </div> 
   
   <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -294,7 +249,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
-    <script type="module" src="js/firebase.js"></script>
+    <script type="module" src="admin/js/firebase.js"></script>
 
 </body>
 

@@ -48,13 +48,6 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li> -->
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="index.html" data-toggle="collapse" data-target="#collapsePages"
@@ -64,11 +57,11 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item active" href="../admin/angka.html">Data Angka</a>
+                        <a class="collapse-item" href="../admin/angka.html">Data Angka</a>
                         <a class="collapse-item" href="../admin/huruf.html">Data Huruf</a>
                         <a class="collapse-item" href="../admin/hewan.html">Data Hewan</a>
                         <a class="collapse-item" href="../admin/buah.html">Data Buah</a>
-                        <a class="collapse-item" href="../admin/kuis.html">Data Kuis</a>
+                        <a class="collapse-item active" href="../admin/kuis.html">Data Kuis</a>
                     </div>
                 </div>
             </li>
@@ -132,11 +125,11 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
-                            <h5 class="m-0 font-weight-bold text-dark">Data Angka</h5>
+                            <h5 class="m-0 font-weight-bold text-dark">Data Kuis</h5>
                             <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"
                             type="button">
                                 <i class="fas fa-plus"></i>
-                                Tambah Angka
+                                Tambah Kuis
                             </button>
                         </div>
                         <div class="card-body">
@@ -144,21 +137,16 @@
                                 <table class="table table-striped" id="angkaTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr class="text-center">
-                                            <!-- <th>Id-Data</th> -->
-                                            <th>Angka</th>
-                                            <th>Audio</th>
+                                            <th>Nomor</th>
+                                            <!-- <th>Kategori</th> -->
+                                            <th>Soal</th>
+                                            <th>Pilihan</th>
+                                            <th>Jawaban</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
-                                    <!-- <tfoot>
-                                        <tr class="text-center">
-                                            <th>Angka</th>
-                                            <th>Audio</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </tfoot> -->
                                     
-                                    <tbody id="angka">
+                                    <tbody id="kuis">
                                    
                                     </tbody>
                                 </table>
@@ -196,20 +184,39 @@
     <!-- Form Tambah Angka Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form id="angkaForm">
+            <form id="kuisForm">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Data Angka</h5>
+                    <h5 class="modal-title">Tambah Data Kuis</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="angka" class="form-label">Angka</label>
-                        <input type="number" class="form-control" id="angka">
+                        <label for="nomor" class="form-label">Nomor</label>
+                        <input type="number" class="form-control" id="nomor">
                     </div>
-                    <div class="mb-3">
-                        <label for="audio" class="form-label">Audio</label>
-                        <input type="file" class="form-control" id="audio" accept="audio/*">
+                   
+                    <!-- <div class="mb-3">
+                     <label for="kategori" class="form-label">Kategori</label>
+                     <select class="form-select" id="kategori">
+                       <option>Pilih Kategori</option>
+                       <option value="huruf">Huruf</option>
+                       <option value="angka">Angka</option>
+                     </select>
+                   </div> -->
+                   <div class="mb-3">
+                        <label for="soal" class="form-label">Soal</label>
+                        <input type="text" class="form-control" id="soal">
+                    </div>
+                   <div class="mb-3">
+                        <label for="pilihan" class="form-label">Pilihan</label>
+                        <input type="text" class="form-control" id="pilihan1">
+                        <input type="text" class="form-control" id="pilihan2">
+                        <input type="text" class="form-control" id="pilihan3">
+                    </div>
+                   <div class="mb-3">
+                        <label for="jawaban" class="form-label">Jawaban</label>
+                        <input type="text" class="form-control" id="jawaban">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -221,36 +228,52 @@
         </div>
     </div>
 
-    <!-- Modal Edit Angka -->
-    <div class="modal fade" id="editAngkaModal" tabindex="-1" aria-labelledby="editAngkaModalLabel" aria-hidden="true">
+    <!-- Form Edit Kuis Modal -->
+    <div class="modal fade" id="editKuisModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="editAngkaModalLabel">Edit Angka</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="editAngkaForm">
+            <form id="editKuisForm">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <input type="hidden" id="editKuisDocId" name="docId">
+                    <h5 class="modal-title">Edit Data Kuis</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div class="modal-body">
-                    <input type="hidden" id="editAngkaDocId" name="docId">
-            
                     <div class="mb-3">
-                        <label for="editAngka" class="form-label">Angka</label>
-                        <input type="text" class="form-control" id="editAngka" name="angka" required>
+                        <label for="nomor" class="form-label">Nomor</label>
+                        <input type="number" class="form-control" id="editNomor">
                     </div>
+                    
                     <div class="mb-3">
-                        <label for="editAudio" class="form-label">Audio</label>
-                        <input type="file" class="form-control" id="editAudio" name="audio">
+                     <label for="kategori" class="form-label">Kategori</label>
+                     <select class="form-select" id="editKategori">
+                       <option value="huruf">Huruf</option>
+                       <option value="angka">Angka</option>
+                     </select>
+                   </div>
+                   <div class="mb-3">
+                        <label for="soal" class="form-label">Soal</label>
+                        <input type="text" class="form-control" id="editSoal">
+                    </div>
+                   <div class="mb-3">
+                        <label for="pilihan" class="form-label">Pilihan</label>
+                        <input type="text" class="form-control" id="editPilihan1">
+                        <input type="text" class="form-control" id="editPilihan2">
+                        <input type="text" class="form-control" id="editPilihan3">
+                    </div>
+                   <div class="mb-3">
+                        <label for="jawaban" class="form-label">Jawaban</label>
+                        <input type="text" class="form-control" id="editJawaban">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                </div>
                 </div>
             </form>
-            
         </div>
-        </div>
-    </div> 
+    </div>
   
   <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

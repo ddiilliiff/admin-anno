@@ -64,10 +64,11 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="angka.html">Data Angka</a>
-                        <a class="collapse-item" href="huruf.html">Data Huruf</a>
-                        <!-- <a class="collapse-item" href="warna.html">Data Warna</a> -->
-                        <a class="collapse-item active" href="hewan.html">Data Hewan</a>
+                        <a class="collapse-item" href="../admin/angka.html">Data Angka</a>
+                        <a class="collapse-item" href="../admin/huruf.html">Data Huruf</a>
+                        <a class="collapse-item active" href="../admin/hewan.html">Data Hewan</a>
+                        <a class="collapse-item" href="../admin/buah.html">Data Buah</a>
+                        <a class="collapse-item" href="../admin/kuis.html">Data Kuis</a>
                     </div>
                 </div>
             </li>
@@ -186,7 +187,7 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Form Tambah Angka Modal -->
+    <!-- Form Tambah Hewan Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <form id="hewanForm">
@@ -199,6 +200,43 @@
                     <div class="mb-3">
                         <label for="nama" class="form-label">Nama Hewan</label>
                         <input type="text" class="form-control" id="nama">
+                    </div>
+                    <div class="mb-3">
+                        <label for="gambar" class="form-label">Gambar</label>
+                        <input type="file" class="form-control" id="gambar" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label for="sound" class="form-label">Sound</label>
+                        <input type="file" class="form-control" id="sound" accept="audio/*">
+                    </div>
+                    <div class="mb-3">
+                        <label for="audio" class="form-label">Audio</label>
+                        <input type="file" class="form-control" id="audio" accept="audio/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Form edit data hewan -->
+    <div class="modal fade" id="editHewanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="editHewanForm">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data Hewan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editHewanDocId" name="docId">
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Nama Hewan</label>
+                        <input type="text" class="form-control" id="editHewan">
                     </div>
                     <div class="mb-3">
                         <label for="gambar" class="form-label">Gambar</label>

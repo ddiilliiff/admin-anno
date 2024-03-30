@@ -34,11 +34,11 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+         <!-- Sidebar -->
+         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                 <!-- <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div> -->
@@ -49,15 +49,15 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item">
+                <a class="nav-link" href="../index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
-            </li> -->
+            </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="index.html" data-toggle="collapse" data-target="#collapsePages"
+                <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Database</span>
@@ -66,7 +66,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="../admin/angka.html">Data Angka</a>
                         <a class="collapse-item" href="../admin/huruf.html">Data Huruf</a>
-                        <a class="collapse-item active" href="../admin/hewan.html">Data Hewan</a>
+                        <a class="collapse-item" href="../admin/hewan.html">Data Hewan</a>
                         <a class="collapse-item" href="../admin/buah.html">Data Buah</a>
                         <a class="collapse-item" href="../admin/kuis.html">Data Kuis</a>
                     </div>
@@ -146,8 +146,8 @@
                                         <tr class="text-center">
                                             <th>Nama Hewan</th>
                                             <th>Gambar</th>
-                                            <th>Audio</th>
                                             <th>Sound</th>
+                                            <th>Audio</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -223,7 +223,7 @@
         </div>
     </div>
 
-    <!-- Form edit data hewan -->
+    <!-- Form Edit data hewan -->
     <div class="modal fade" id="editHewanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <form id="editHewanForm">
@@ -240,15 +240,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="gambar" class="form-label">Gambar</label>
-                        <input type="file" class="form-control" id="gambar" accept="image/*">
+                        <input type="file" class="form-control" id="editGambar" accept="image/*">
                     </div>
                     <div class="mb-3">
                         <label for="sound" class="form-label">Sound</label>
-                        <input type="file" class="form-control" id="sound" accept="audio/*">
+                        <input type="file" class="form-control" id="editSound" accept="audio/*">
                     </div>
                     <div class="mb-3">
                         <label for="audio" class="form-label">Audio</label>
-                        <input type="file" class="form-control" id="audio" accept="audio/*">
+                        <input type="file" class="form-control" id="editAudio" accept="audio/*">
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -3,27 +3,27 @@ import {
   getFirestore,
   collection,
   getDocs,
-  getDoc, // Untuk mengambil satu dokumen
-  updateDoc, // Untuk mengupdate dokumen
-  addDoc, // Jika Anda ingin menambahkan dokumen baru
+  getDoc,
+  updateDoc,
+  addDoc,
   deleteDoc,
   query,
   orderBy,
-  doc, // Tambahkan ini untuk menambahkan dokumen
+  doc,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 import {
   getStorage,
   ref,
   getDownloadURL,
   uploadBytes,
-  uploadBytesResumable, // Tambahkan ini untuk mengunggah file
+  uploadBytesResumable,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-storage.js";
-// import {
-//   getAuth,
-//   signInWithEmailAndPassword,
-//   onAuthStateChanged,
-//   signOut,
-// } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDJOL5q3A4jcJ7J2S5PvkkINcRm7NeUbKM",
@@ -38,34 +38,174 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Fungsi Login
+// Login
+if (document.getElementById("login")) {
+  document.addEventListener("DOMContentLoaded", function () {
+    const auth = getAuth();
+
+    // Periksa apakah pengguna sudah login saat halaman dimuat
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Jika pengguna sudah login, arahkan ke halaman dashboard
+        sessionStorage.setItem("isLoggedIn", "true");
+        window.location.href = "index.html";
+      }
+    });
+
+    // Tangkap submit form login
+    const loginForm = document.getElementById("login");
+    if (loginForm) {
+      loginForm.addEventListener("submit", async function (event) {
+        event.preventDefault(); // Mencegah submit form default
+
+        // Mengambil nilai email dan password dari form
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          // Proses otentikasi menggunakan Firebase Authentication
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+          // // Tampilkan pesan Sweet Alert bahwa login berhasil
+          // Swal.fire({
+          //   icon: "success",
+          //   title: "Login Berhasil",
+          //   text: "Anda telah berhasil masuk.",
+          //   showConfirmButton: false,
+          //   timer: 3000,
+          // });
+
+          // Redirect ke halaman index
+          sessionStorage.setItem("loginSuccess", "true");
+          window.location.href = "index.html";
+        } catch (error) {
+          // Handle error saat login gagal
+          console.error("Login error:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Login Gagal",
+            text: "Email atau password salah. Silakan coba lagi.",
+          });
+        }
+      });
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Periksa apakah ada informasi logout di session storage saat halaman dimuat
+    const isLoggedOut = sessionStorage.getItem("isLoggedOut");
+
+    // Jika ada informasi logout, tampilkan Sweet Alert
+    if (isLoggedOut) {
+      Swal.fire({
+        icon: "success",
+        title: "Logout Berhasil",
+        text: "Anda telah berhasil logout.",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      // Hapus informasi logout dari session storage
+      sessionStorage.removeItem("isLoggedOut");
+    }
+  });
+}
 
 // Dashboard
-// Ambil data dari setiap koleksi dan tampilkan jumlahnya
-const fetchDataAndDisplayCount = async (collectionName, elementId) => {
-  const querySnapshot = await getDocs(collection(db, collectionName));
-  document.getElementById(elementId).innerText = querySnapshot.size;
-};
+if (document.getElementById("dashboard")) {
+  const fetchDataAndDisplayCount = async (collectionName, elementId) => {
+    const querySnapshot = await getDocs(collection(db, collectionName));
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.innerText = querySnapshot.size;
+    } else {
+      console.error("Element with ID:", elementId, "not found.");
+    }
+  };
+  fetchDataAndDisplayCount("angka", "angkaCount");
+  fetchDataAndDisplayCount("huruf", "hurufCount");
+  fetchDataAndDisplayCount("buah", "buahCount");
+  fetchDataAndDisplayCount("hewan", "hewanCount");
+  fetchDataAndDisplayCount("kuis", "kuisCount");
 
-// Panggil fungsi fetchDataAndDisplayCount untuk setiap koleksi
-fetchDataAndDisplayCount("angka", "angkaCount");
-fetchDataAndDisplayCount("huruf", "hurufCount");
-fetchDataAndDisplayCount("buah", "buahCount");
-fetchDataAndDisplayCount("hewan", "hewanCount");
-fetchDataAndDisplayCount("kuis", "kuisCount");
+  document.addEventListener("DOMContentLoaded", function () {
+    // Periksa apakah ada data login di sessionStorage
+    const loginSuccess = sessionStorage.getItem("loginSuccess");
+
+    if (loginSuccess) {
+      // Hapus data login dari sessionStorage
+      sessionStorage.removeItem("loginSuccess");
+
+      // Tampilkan pesan SweetAlert2 bahwa login berhasil
+      Swal.fire({
+        icon: "success",
+        title: "Login Berhasil",
+        text: "Anda telah berhasil masuk.",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  });
+
+  // Tombol atau tautan logout
+  document
+    .getElementById("logout")
+    .addEventListener("click", async function () {
+      try {
+        const auth = getAuth();
+        // Lakukan proses logout di Firebase Authentication
+        await signOut(auth);
+
+        // Hapus informasi login dari session storage
+        sessionStorage.removeItem("isLoggedIn");
+
+        // Simpan informasi logout di session storage
+        sessionStorage.setItem("isLoggedOut", "true");
+
+        // Tampilkan pesan Sweet Alert bahwa logout berhasil
+        // Swal.fire({
+        //   icon: "success",
+        //   title: "Logout Berhasil",
+        //   text: "Anda telah berhasil logout.",
+        //   showConfirmButton: false,
+        //   timer: 3000,
+        // });
+
+        // Redirect kembali ke halaman login
+        window.location.href = "login.html";
+      } catch (error) {
+        console.error("Logout error:", error);
+        // Tampilkan pesan error jika logout gagal
+        Swal.fire({
+          icon: "error",
+          title: "Logout Gagal",
+          text: "Terjadi kesalahan saat proses logout. Silakan coba lagi.",
+        });
+      }
+    });
+
+  // Periksa apakah pengguna sudah login saat halaman dimuat
+  document.addEventListener("DOMContentLoaded", function () {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    if (!isLoggedIn) {
+      // Jika pengguna belum login, arahkan kembali ke halaman login
+      window.location.href = "login.html";
+    }
+  });
+}
 
 // Kuis
 if (document.getElementById("kuis")) {
   async function getKuisAndDisplay() {
     const kuisListElement = document.getElementById("kuis");
     kuisListElement.innerHTML = "";
-
     const kuisQuery = query(collection(db, "kuis"));
     const kuisSnapshot = await getDocs(kuisQuery);
-
     for (const doc of kuisSnapshot.docs) {
       const data = doc.data();
-
       const row = document.createElement("tr");
       row.innerHTML = `
         <td class="text-center mt-5">${
@@ -111,11 +251,8 @@ if (document.getElementById("kuis")) {
     document
       .getElementById("kuisForm")
       .addEventListener("submit", async function (e) {
-        e.preventDefault(); // Prevent default form submission
-
-        // Proses penyimpanan data...
+        e.preventDefault();
         const nomorValue = document.getElementById("nomor").value;
-        // const kategoriValue = document.getElementById("kategori").value;
         const soalValue = document.getElementById("soal").value;
         const pilihan1Value = document.getElementById("pilihan1").value;
         const pilihan2Value = document.getElementById("pilihan2").value;
@@ -124,25 +261,20 @@ if (document.getElementById("kuis")) {
         try {
           await addDoc(collection(db, "kuis"), {
             nomor: nomorValue,
-            // kategori: kategoriValue,
             soal: soalValue,
             pilihan: [pilihan1Value, pilihan2Value, pilihan3Value],
             jawaban: jawabanValue,
           });
-
           Swal.fire({
             icon: "success",
             title: "Berhasil disimpan!",
             text: "Data kuis berhasil disimpan!",
           }).then((result) => {
             if (result.isConfirmed) {
-              getKuisAndDisplay(); // Refresh tabel setelah penyimpanan
+              getKuisAndDisplay();
             }
           });
-
           document.getElementById("kuisForm").reset();
-          // Tutup modal jika Anda menggunakan Bootstrap modal
-          // $('.modal').modal('hide'); atau $('#modalId').modal('hide');
         } catch (error) {
           console.error("Error saat menyimpan data:", error);
           Swal.fire({
@@ -158,7 +290,6 @@ if (document.getElementById("kuis")) {
   document.addEventListener("click", async (e) => {
     if (e.target.closest(".delete-kuis")) {
       const docId = e.target.closest(".delete-kuis").getAttribute("data-id");
-      // Menggunakan SweetAlert2 untuk konfirmasi
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Data ini akan dihapus secara permanen!",
@@ -170,11 +301,10 @@ if (document.getElementById("kuis")) {
         cancelButtonText: "Batal",
       }).then((result) => {
         if (result.isConfirmed) {
-          // Jika pengguna mengkonfirmasi, hapus data
           deleteKuis(docId)
             .then(() => {
               Swal.fire("Terhapus!", "Data telah dihapus.", "success");
-              getKuisAndDisplay(); // Refresh daftar
+              getKuisAndDisplay();
             })
             .catch((error) => {
               console.error("Failed to delete document: ", error);
@@ -184,7 +314,6 @@ if (document.getElementById("kuis")) {
       });
     }
   });
-
   async function deleteKuis(docId) {
     try {
       await deleteDoc(doc(db, "kuis", docId));
@@ -194,32 +323,25 @@ if (document.getElementById("kuis")) {
     }
   }
 
-  // Edit kuis
+  // Mengubah data kuis
   if (document.getElementById("editKuisModal")) {
     document.addEventListener("DOMContentLoaded", () => {
       const editKuisModal = new bootstrap.Modal(
         document.getElementById("editKuisModal")
       );
-
       document.addEventListener("click", async function (e) {
         if (e.target.closest(".edit-kuis")) {
           const docId = e.target.closest(".edit-kuis").getAttribute("data-id");
-
-          // Dapatkan data dari Firestore
           const docRef = doc(db, "kuis", docId);
           const docSnap = await getDoc(docRef);
-
           if (docSnap.exists()) {
             const data = docSnap.data();
-            // Isi nilai ke dalam form modal
             document.getElementById("editNomor").value = data.nomor;
-            // document.getElementById("editKategori").value = data.kategori;
             document.getElementById("editSoal").value = data.soal;
             document.getElementById("editPilihan1").value = data.pilihan[0];
             document.getElementById("editPilihan2").value = data.pilihan[1];
             document.getElementById("editPilihan3").value = data.pilihan[2];
             document.getElementById("editJawaban").value = data.jawaban;
-            // Simpan docId ke dalam input tersembunyi
             document.getElementById("editKuisDocId").value = docId;
             editKuisModal.show();
           } else {
@@ -227,27 +349,20 @@ if (document.getElementById("kuis")) {
           }
         }
       });
-
       document
         .getElementById("editKuisForm")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
-
-          // Mendapatkan docId dari input tersembunyi
           const docId = document.getElementById("editKuisDocId").value;
           const nomorValue = document.getElementById("editNomor").value;
-          // const kategoriValue = document.getElementById("editKategori").value;
           const soalValue = document.getElementById("editSoal").value;
           const pilihan1Value = document.getElementById("editPilihan1").value;
           const pilihan2Value = document.getElementById("editPilihan2").value;
           const pilihan3Value = document.getElementById("editPilihan3").value;
           const jawabanValue = document.getElementById("editJawaban").value;
-
           try {
-            // Update data di Firestore
             await updateDoc(doc(db, "kuis", docId), {
               nomor: nomorValue,
-              // kategori: kategoriValue,
               soal: soalValue,
               pilihan: [pilihan1Value, pilihan2Value, pilihan3Value],
               jawaban: jawabanValue,
@@ -275,10 +390,10 @@ if (document.getElementById("kuis")) {
 
 // Hewan
 if (document.getElementById("hewan")) {
+  // Menampilkan data hewan
   async function getHewanAndDisplay() {
     const hewanListElement = document.getElementById("hewan");
     hewanListElement.innerHTML = "";
-
     const hewanQuery = query(collection(db, "hewan"));
     const hewanSnapshot = await getDocs(hewanQuery);
 
@@ -362,13 +477,12 @@ if (document.getElementById("hewan")) {
     getHewanAndDisplay();
   }
 
+  // Menambah data hewan
   if (document.getElementById("hewanForm")) {
     document
       .getElementById("hewanForm")
       .addEventListener("submit", async function (e) {
-        e.preventDefault(); // Prevent default form submission
-
-        // Proses penyimpanan data...
+        e.preventDefault();
         const namaValue = document.getElementById("nama").value;
         const gambarFile = document.getElementById("gambar").files[0];
         const audioFile = document.getElementById("audio").files[0];
@@ -382,6 +496,7 @@ if (document.getElementById("hewan")) {
           });
           return;
         }
+
         if (!audioFile) {
           Swal.fire({
             icon: "error",
@@ -390,6 +505,7 @@ if (document.getElementById("hewan")) {
           });
           return;
         }
+
         if (!soundFile) {
           Swal.fire({
             icon: "error",
@@ -399,9 +515,9 @@ if (document.getElementById("hewan")) {
           return;
         }
 
-        const gambarPath = `img-hewan/${gambarFile.name}`; // Memastikan nama file unik
-        const audioPath = `hewan/${audioFile.name}`; // Memastikan nama file unik
-        const soundPath = `hewan/${soundFile.name}`; // Memastikan nama file unik
+        const gambarPath = `img-hewan/${gambarFile.name}`;
+        const audioPath = `hewan/${audioFile.name}`;
+        const soundPath = `hewan/${soundFile.name}`;
         const gambarStorageRef = ref(storage, gambarPath);
         const audioStorageRef = ref(storage, audioPath);
         const soundStorageRef = ref(storage, soundPath);
@@ -413,7 +529,6 @@ if (document.getElementById("hewan")) {
           const gambarUrl = await getDownloadURL(gambarStorageRef);
           const audioUrl = await getDownloadURL(audioStorageRef);
           const soundUrl = await getDownloadURL(soundStorageRef);
-          // const angkaValueNumber = parseInt(angkaValue);
 
           await addDoc(collection(db, "hewan"), {
             nama: namaValue,
@@ -428,13 +543,11 @@ if (document.getElementById("hewan")) {
             text: "Data hewan, gambar, sound dan audio berhasil disimpan!",
           }).then((result) => {
             if (result.isConfirmed) {
-              getHewanAndDisplay(); // Refresh tabel setelah penyimpanan
+              getHewanAndDisplay();
             }
           });
 
           document.getElementById("hewanForm").reset();
-          // Tutup modal jika Anda menggunakan Bootstrap modal
-          // $('.modal').modal('hide'); atau $('#modalId').modal('hide');
         } catch (error) {
           console.error("Error saat menyimpan data:", error);
           Swal.fire({
@@ -450,7 +563,6 @@ if (document.getElementById("hewan")) {
   document.addEventListener("click", async (e) => {
     if (e.target.closest(".delete-hewan")) {
       const docId = e.target.closest(".delete-hewan").getAttribute("data-id");
-      // Menggunakan SweetAlert2 untuk konfirmasi
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Data ini akan dihapus secara permanen!",
@@ -462,11 +574,10 @@ if (document.getElementById("hewan")) {
         cancelButtonText: "Batal",
       }).then((result) => {
         if (result.isConfirmed) {
-          // Jika pengguna mengkonfirmasi, hapus data
           deleteHewan(docId)
             .then(() => {
               Swal.fire("Terhapus!", "Data telah dihapus.", "success");
-              getHewanAndDisplay(); // Refresh daftar
+              getHewanAndDisplay();
             })
             .catch((error) => {
               console.error("Failed to delete document: ", error);
@@ -486,7 +597,7 @@ if (document.getElementById("hewan")) {
     }
   }
 
-  // Edit hewan
+  // Mengubah data hewan
   if (document.getElementById("editHewanModal")) {
     document.addEventListener("DOMContentLoaded", () => {
       const editHewanModal = new bootstrap.Modal(
@@ -496,16 +607,14 @@ if (document.getElementById("hewan")) {
       document.addEventListener("click", async function (e) {
         if (e.target.closest(".edit-hewan")) {
           const docId = e.target.closest(".edit-hewan").getAttribute("data-id");
-
-          // Dapatkan data dari Firestore
           const docRef = doc(db, "hewan", docId);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
             const data = docSnap.data();
-            // Isi nilai ke dalam form modal
             document.getElementById("editHewan").value = data.nama;
-            // Simpan docId ke dalam input tersembunyi
+            // Reset nilai input audio
+            document.getElementById("editAudio").value = "";
             document.getElementById("editHewanDocId").value = docId;
             editHewanModal.show();
           } else {
@@ -518,30 +627,96 @@ if (document.getElementById("hewan")) {
         .getElementById("editHewanForm")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
-
-          // Mendapatkan docId dari input tersembunyi
           const docId = document.getElementById("editHewanDocId").value;
-          const hewanValue = document.getElementById("editHewan").value;
-          // const aValueNumber = parseInt(hewanValue);
+          const namaHewan = document.getElementById("editHewan").value;
+          const gambarFile = document.getElementById("editGambar").files[0];
+          const soundFile = document.getElementById("editSound").files[0];
+          const audioFile = document.getElementById("editAudio").files[0];
 
           try {
-            // Update data di Firestore
-            await updateDoc(doc(db, "hewan", docId), {
-              nama: hewanValue,
-            });
+            const updateData = {};
+            let shouldFetchData = false;
 
-            Swal.fire(
-              "Berhasil diubah!",
-              "Data hewan berhasil diubah!",
-              "success"
-            );
-            editHewanModal.hide();
-            getHewanAndDisplay();
+            if (namaHewan.trim() !== "") {
+              updateData.nama = namaHewan;
+              shouldFetchData = true;
+            }
+
+            if (gambarFile) {
+              const gambarRef = ref(
+                storage,
+                "img-hewan/" + docId + "/" + gambarFile.name
+              );
+              const gambarUploadTask = uploadBytesResumable(
+                gambarRef,
+                gambarFile
+              );
+
+              await gambarUploadTask;
+
+              const downloadURL = await getDownloadURL(
+                gambarUploadTask.snapshot.ref
+              );
+              updateData.gambar = downloadURL;
+              shouldFetchData = true;
+            }
+
+            if (soundFile) {
+              const soundRef = ref(
+                storage,
+                "hewan/" + docId + "/" + soundFile.name
+              );
+              const soundUploadTask = uploadBytesResumable(soundRef, soundFile);
+
+              await soundUploadTask;
+
+              const downloadURL = await getDownloadURL(
+                soundUploadTask.snapshot.ref
+              );
+              updateData.sound = downloadURL;
+              shouldFetchData = true;
+            }
+
+            if (audioFile) {
+              const audioRef = ref(
+                storage,
+                "hewan/" + docId + "/" + audioFile.name
+              );
+              const audioUploadTask = uploadBytesResumable(audioRef, audioFile);
+
+              await audioUploadTask;
+
+              const downloadURL = await getDownloadURL(
+                audioUploadTask.snapshot.ref
+              );
+              updateData.audio = downloadURL;
+              shouldFetchData = true;
+            }
+
+            if (shouldFetchData) {
+              await updateDoc(doc(db, "hewan", docId), updateData);
+              Swal.fire(
+                "Berhasil diubah!",
+                "Data hewan berhasil diubah!",
+                "success"
+              );
+              const editHewanModal = bootstrap.Modal.getInstance(
+                document.getElementById("editHewanModal")
+              );
+              editHewanModal.hide();
+              getHewanAndDisplay();
+            } else {
+              Swal.fire(
+                "Peringatan!",
+                "Tidak ada perubahan yang dilakukan.",
+                "warning"
+              );
+            }
           } catch (error) {
             console.error("Error updating document:", error);
             Swal.fire(
               "Error!",
-              "There was an issue updating your data.",
+              "Terjadi kesalahan saat memperbarui data.",
               "error"
             );
           }
@@ -552,6 +727,7 @@ if (document.getElementById("hewan")) {
 
 // Buah
 if (document.getElementById("buah")) {
+  // Menampilkan Data Buah
   async function getBuahAndDisplay() {
     const buahListElement = document.getElementById("buah");
     buahListElement.innerHTML = "";
@@ -621,17 +797,15 @@ if (document.getElementById("buah")) {
     getBuahAndDisplay();
   }
 
+  // Menambahkan data buah
   if (document.getElementById("buahForm")) {
     document
       .getElementById("buahForm")
       .addEventListener("submit", async function (e) {
-        e.preventDefault(); // Prevent default form submission
-
-        // Proses penyimpanan data...
+        e.preventDefault();
         const namaValue = document.getElementById("nama").value;
         const gambarFile = document.getElementById("gambar").files[0];
         const audioFile = document.getElementById("audio").files[0];
-
         if (!gambarFile) {
           Swal.fire({
             icon: "error",
@@ -648,38 +822,31 @@ if (document.getElementById("buah")) {
           });
           return;
         }
-
-        const gambarPath = `img-hewan/${gambarFile.name}`; // Memastikan nama file unik
-        const audioPath = `hewan/${audioFile.name}`; // Memastikan nama file unik
+        const gambarPath = `img-hewan/${gambarFile.name}`;
+        const audioPath = `hewan/${audioFile.name}`;
         const gambarStorageRef = ref(storage, gambarPath);
         const audioStorageRef = ref(storage, audioPath);
-
         try {
           await uploadBytes(gambarStorageRef, gambarFile);
           await uploadBytes(audioStorageRef, audioFile);
           const gambarUrl = await getDownloadURL(gambarStorageRef);
           const audioUrl = await getDownloadURL(audioStorageRef);
-          // const angkaValueNumber = parseInt(angkaValue);
-
           await addDoc(collection(db, "buah"), {
             nama: namaValue,
             gambar: gambarUrl,
             audio: audioUrl,
           });
-
           Swal.fire({
             icon: "success",
             title: "Berhasil disimpan!",
             text: "Data nama buah, gambar dan audio berhasil disimpan!",
           }).then((result) => {
             if (result.isConfirmed) {
-              getBuahAndDisplay(); // Refresh tabel setelah penyimpanan
+              getBuahAndDisplay();
             }
           });
 
           document.getElementById("buahForm").reset();
-          // Tutup modal jika Anda menggunakan Bootstrap modal
-          // $('.modal').modal('hide'); atau $('#modalId').modal('hide');
         } catch (error) {
           console.error("Error saat menyimpan data:", error);
           Swal.fire({
@@ -695,7 +862,6 @@ if (document.getElementById("buah")) {
   document.addEventListener("click", async (e) => {
     if (e.target.closest(".delete-buah")) {
       const docId = e.target.closest(".delete-buah").getAttribute("data-id");
-      // Menggunakan SweetAlert2 untuk konfirmasi
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Data ini akan dihapus secara permanen!",
@@ -707,11 +873,10 @@ if (document.getElementById("buah")) {
         cancelButtonText: "Batal",
       }).then((result) => {
         if (result.isConfirmed) {
-          // Jika pengguna mengkonfirmasi, hapus data
           deleteBuah(docId)
             .then(() => {
               Swal.fire("Terhapus!", "Data telah dihapus.", "success");
-              getBuahAndDisplay(); // Refresh daftar
+              getBuahAndDisplay();
             })
             .catch((error) => {
               console.error("Failed to delete document: ", error);
@@ -731,7 +896,7 @@ if (document.getElementById("buah")) {
     }
   }
 
-  // Edit buah
+  // Mengubah data buah
   if (document.getElementById("editBuahModal")) {
     document.addEventListener("DOMContentLoaded", () => {
       const editBuahModal = new bootstrap.Modal(
@@ -741,16 +906,14 @@ if (document.getElementById("buah")) {
       document.addEventListener("click", async function (e) {
         if (e.target.closest(".edit-buah")) {
           const docId = e.target.closest(".edit-buah").getAttribute("data-id");
-
-          // Dapatkan data dari Firestore
           const docRef = doc(db, "buah", docId);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
             const data = docSnap.data();
-            // Isi nilai ke dalam form modal
             document.getElementById("editBuah").value = data.nama;
-            // Simpan docId ke dalam input tersembunyi
+            // Reset nilai input audio
+            document.getElementById("editAudio").value = "";
             document.getElementById("editBuahDocId").value = docId;
             editBuahModal.show();
           } else {
@@ -766,27 +929,98 @@ if (document.getElementById("buah")) {
 
           // Mendapatkan docId dari input tersembunyi
           const docId = document.getElementById("editBuahDocId").value;
-          const buahValue = document.getElementById("editBuah").value;
-          // const aValueNumber = parseInt(hewanValue);
+          const namaBuah = document.getElementById("editBuah").value;
+          const gambarFile = document.getElementById("editGambar").files[0];
+          const audioFile = document.getElementById("editAudio").files[0];
 
           try {
-            // Update data di Firestore
-            await updateDoc(doc(db, "buah", docId), {
-              nama: buahValue,
-            });
+            const updateData = {};
+            let shouldFetchData = false; // Menandakan apakah perlu memuat ulang data setelah pembaruan
 
-            Swal.fire(
-              "Berhasil diubah!",
-              "Data hewan berhasil diubah!",
-              "success"
-            );
-            editBuahModal.hide();
-            getBuahAndDisplay();
+            // Periksa apakah nama buah diubah
+            if (namaBuah.trim() !== "") {
+              updateData.nama = namaBuah;
+              shouldFetchData = true; // Ada perubahan nama, maka perlu memuat ulang data
+            }
+
+            // Periksa apakah file gambar diubah
+            if (gambarFile) {
+              const gambarRef = ref(
+                storage,
+                "img-buah/" + docId + "/" + gambarFile.name
+              );
+              const gambarUploadTask = uploadBytesResumable(
+                gambarRef,
+                gambarFile
+              );
+
+              await gambarUploadTask;
+
+              const downloadURL = await getDownloadURL(
+                gambarUploadTask.snapshot.ref
+              );
+              updateData.gambar = downloadURL;
+              shouldFetchData = true; // Ada perubahan gambar, maka perlu memuat ulang data
+
+              // Update data di Firestore setelah gambar diunggah
+              await updateDoc(doc(db, "buah", docId), updateData);
+
+              Swal.fire(
+                "Berhasil diubah!",
+                "Data buah berhasil diubah!",
+                "success"
+              );
+              // Sembunyikan modal setelah berhasil
+              const editBuahModal = bootstrap.Modal.getInstance(
+                document.getElementById("editBuahModal")
+              );
+              editBuahModal.hide();
+              // Muat ulang data buah jika perlu
+              if (shouldFetchData) {
+                getBuahAndDisplay();
+              }
+            } else if (audioFile) {
+              shouldFetchData = true; // Ada perubahan pada file audio, maka perlu memuat ulang data
+            }
+
+            // Periksa apakah file audio diubah
+            if (audioFile) {
+              const audioRef = ref(
+                storage,
+                "buah/" + docId + "/" + audioFile.name
+              );
+              const audioUploadTask = uploadBytesResumable(audioRef, audioFile);
+
+              await audioUploadTask;
+
+              const downloadURL = await getDownloadURL(
+                audioUploadTask.snapshot.ref
+              );
+              updateData.audio = downloadURL;
+
+              // Update data di Firestore setelah audio diunggah
+              await updateDoc(doc(db, "buah", docId), updateData);
+
+              Swal.fire(
+                "Berhasil diubah!",
+                "Data buah berhasil diubah!",
+                "success"
+              );
+              // Sembunyikan modal setelah berhasil
+              const editBuahModal = bootstrap.Modal.getInstance(
+                document.getElementById("editBuahModal")
+              );
+              editBuahModal.hide();
+              // Muat ulang data buah jika perlu
+              if (shouldFetchData) {
+                getBuahAndDisplay();
+              }
+            }
           } catch (error) {
             console.error("Error updating document:", error);
             Swal.fire(
               "Error!",
-              "There was an issue updating your data.",
+              "Terjadi kesalahan saat memperbarui data.",
               "error"
             );
           }
@@ -949,68 +1183,7 @@ if (document.getElementById("angka")) {
       });
   }
 
-  // Mengedit angka
-  // if (document.getElementById("editAngkaModal")) {
-  //   document.addEventListener("DOMContentLoaded", () => {
-  //     const editAngkaModal = new bootstrap.Modal(
-  //       document.getElementById("editAngkaModal")
-  //     );
-
-  //     document.addEventListener("click", async function (e) {
-  //       if (e.target.closest(".edit-angka")) {
-  //         const docId = e.target.closest(".edit-angka").getAttribute("data-id");
-
-  //         // Dapatkan data dari Firestore
-  //         const docRef = doc(db, "angka", docId);
-  //         const docSnap = await getDoc(docRef);
-
-  //         if (docSnap.exists()) {
-  //           const data = docSnap.data();
-  //           // Isi nilai ke dalam form modal
-  //           document.getElementById("editAngka").value = data.angka;
-  //           // Simpan docId ke dalam input tersembunyi
-  //           document.getElementById("editAngkaDocId").value = docId;
-  //           editAngkaModal.show();
-  //         } else {
-  //           console.error("No such document!");
-  //         }
-  //       }
-  //     });
-
-  //     document
-  //       .getElementById("editAngkaForm")
-  //       .addEventListener("submit", async function (e) {
-  //         e.preventDefault();
-
-  //         // Mendapatkan docId dari input tersembunyi
-  //         const docId = document.getElementById("editAngkaDocId").value;
-  //         const angkaValue = document.getElementById("editAngka").value;
-  //         const angkaValueNumber = parseInt(angkaValue);
-
-  //         try {
-  //           // Update data di Firestore
-  //           await updateDoc(doc(db, "angka", docId), {
-  //             angka: angkaValueNumber,
-  //           });
-
-  //           Swal.fire(
-  //             "Berhasil diubah!",
-  //             "Data angka berhasil diubah!",
-  //             "success"
-  //           );
-  //           editAngkaModal.hide();
-  //           getAngkaAndDisplay();
-  //         } catch (error) {
-  //           console.error("Error updating document:", error);
-  //           Swal.fire(
-  //             "Error!",
-  //             "There was an issue updating your data.",
-  //             "error"
-  //           );
-  //         }
-  //       });
-  //   });
-  // }
+  // Mengubah angka
   if (document.getElementById("editAngkaModal")) {
     document.addEventListener("DOMContentLoaded", () => {
       const editAngkaModal = new bootstrap.Modal(
@@ -1301,65 +1474,131 @@ if (document.getElementById("huruf")) {
   }
 
   // Mengubah huruf
-  // if (document.getElementById("editHurufModal")) {
-  //   document.addEventListener("DOMContentLoaded", () => {
-  //     const editHurufModal = new bootstrap.Modal(
-  //       document.getElementById("editHurufModal")
-  //     );
+  if (document.getElementById("editHurufModal")) {
+    document.addEventListener("DOMContentLoaded", () => {
+      const editHurufModal = new bootstrap.Modal(
+        document.getElementById("editHurufModal")
+      );
 
-  //     document.addEventListener("click", async function (e) {
-  //       if (e.target.closest(".edit-huruf")) {
-  //         const docId = e.target.closest(".edit-huruf").getAttribute("data-id");
+      document.addEventListener("click", async function (e) {
+        if (e.target.closest(".edit-huruf")) {
+          const docId = e.target.closest(".edit-huruf").getAttribute("data-id");
 
-  //         // Dapatkan data dari Firestore
-  //         const docRef = doc(db, "huruf", docId);
-  //         const docSnap = await getDoc(docRef);
+          // Dapatkan data dari Firestore
+          const docRef = doc(db, "huruf", docId);
+          const docSnap = await getDoc(docRef);
 
-  //         if (docSnap.exists()) {
-  //           const data = docSnap.data();
-  //           // Isi nilai ke dalam form modal
-  //           document.getElementById("editHuruf").value = data.huruf;
-  //           // Simpan docId ke dalam input tersembunyi
-  //           document.getElementById("editHurufDocId").value = docId;
-  //           editHurufModal.show();
-  //         } else {
-  //           console.error("No such document!");
-  //         }
-  //       }
-  //     });
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            // Isi nilai ke dalam form modal
+            document.getElementById("editHuruf").value = data.huruf;
+            // Reset nilai input audio
+            document.getElementById("editAudio").value = "";
+            // Simpan docId ke dalam input tersembunyi
+            document.getElementById("editHurufDocId").value = docId;
+            editHurufModal.show();
+          } else {
+            console.error("No such document!");
+          }
+        }
+      });
 
-  //     document
-  //       .getElementById("editHurufForm")
-  //       .addEventListener("submit", async function (e) {
-  //         e.preventDefault();
+      document
+        .getElementById("editHurufForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
 
-  //         // Mendapatkan docId dari input tersembunyi
-  //         const docId = document.getElementById("editHurufDocId").value;
-  //         const hurufValue = document.getElementById("editHuruf").value;
+          // Mendapatkan docId dari input tersembunyi
+          const docId = document.getElementById("editHurufDocId").value;
+          const hurufValue = document.getElementById("editHuruf").value;
 
-  //         try {
-  //           // Update data di Firestore
-  //           await updateDoc(doc(db, "huruf", docId), {
-  //             huruf: hurufValue,
-  //           });
+          // Mendapatkan file audio yang dipilih
+          const audioFile = document.getElementById("editAudio").files[0];
 
-  //           Swal.fire(
-  //             "Berhasil diubah!",
-  //             "Data huruf berhasil diubah!",
-  //             "success"
-  //           );
+          try {
+            // Update data di Firestore
+            // if (!isNaN(hurufValue) || audioFile) {
+            if (hurufValue.trim() !== "" || audioFile) {
+              const updateData = {};
 
-  //           editHurufModal.hide();
-  //           getHurufAndDisplay(); // Refresh the list
-  //         } catch (error) {
-  //           console.error("Error updating document:", error);
-  //           Swal.fire(
-  //             "Error!",
-  //             "There was an issue updating your data.",
-  //             "error"
-  //           );
-  //         }
-  //       });
-  //   });
-  // }
+              // if (!isNaN(hurufValue)) {
+              if (hurufValue.trim() !== "") {
+                updateData.huruf = hurufValue;
+              }
+
+              if (audioFile) {
+                const storageRef = ref(
+                  storage,
+                  "audio/" + docId + "/" + audioFile.name
+                );
+                const uploadTask = uploadBytesResumable(storageRef, audioFile);
+
+                uploadTask.on(
+                  "state_changed",
+                  (snapshot) => {
+                    // Handle progress
+                    const progress =
+                      (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log("Upload is " + progress + "% done");
+                  },
+                  (error) => {
+                    // Handle unsuccessful uploads
+                    console.error("Error uploading audio:", error);
+                    Swal.fire(
+                      "Error!",
+                      "There was an issue uploading your audio file.",
+                      "error"
+                    );
+                  },
+                  async () => {
+                    // Handle successful uploads on complete
+                    const downloadURL = await getDownloadURL(
+                      uploadTask.snapshot.ref
+                    );
+
+                    // Update data di Firestore
+                    updateData.audio = downloadURL; // Update URL audio baru
+
+                    await updateDoc(doc(db, "huruf", docId), updateData);
+
+                    Swal.fire(
+                      "Berhasil diubah!",
+                      "Data berhasil diubah!",
+                      "success"
+                    );
+                    editHurufModal.hide();
+                    getHurufAndDisplay();
+                  }
+                );
+              } else {
+                // Update hanya untuk huruf di Firestore jika diisi
+                await updateDoc(doc(db, "huruf", docId), updateData);
+
+                Swal.fire(
+                  "Berhasil diubah!",
+                  "Data berhasil diubah!",
+                  "success"
+                );
+                editHurufModal.hide();
+                getHurufAndDisplay();
+              }
+            } else {
+              // Tidak ada perubahan yang dilakukan
+              Swal.fire(
+                "Peringatan!",
+                "Tidak ada perubahan yang dilakukan.",
+                "warning"
+              );
+            } // Refresh the list
+          } catch (error) {
+            console.error("Error updating document:", error);
+            Swal.fire(
+              "Error!",
+              "There was an issue updating your data.",
+              "error"
+            );
+          }
+        });
+    });
+  }
 }

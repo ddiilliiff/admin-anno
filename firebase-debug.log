@@ -1,14 +1,13 @@
-[debug] [2024-02-18T12:52:41.371Z] ----------------------------------------------------------------------
-[debug] [2024-02-18T12:52:41.374Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Lenovo\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init hosting
-[debug] [2024-02-18T12:52:41.374Z] CLI Version:   13.3.0
-[debug] [2024-02-18T12:52:41.374Z] Platform:      win32
-[debug] [2024-02-18T12:52:41.374Z] Node Version:  v20.9.0
-[debug] [2024-02-18T12:52:41.375Z] Time:          Sun Feb 18 2024 21:52:41 GMT+0900 (Waktu Indonesia Timur)
-[debug] [2024-02-18T12:52:41.375Z] ----------------------------------------------------------------------
+[debug] [2024-03-30T15:01:17.409Z] ----------------------------------------------------------------------
+[debug] [2024-03-30T15:01:17.413Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Lenovo\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-03-30T15:01:17.414Z] CLI Version:   13.6.0
+[debug] [2024-03-30T15:01:17.414Z] Platform:      win32
+[debug] [2024-03-30T15:01:17.414Z] Node Version:  v20.9.0
+[debug] [2024-03-30T15:01:17.414Z] Time:          Sun Mar 31 2024 00:01:17 GMT+0900 (Eastern Indonesia Time)
+[debug] [2024-03-30T15:01:17.414Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2024-02-18T12:52:41.378Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
-[debug] [2024-02-18T12:52:41.420Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2024-02-18T12:52:41.420Z] > authorizing via signed-in user (pongmasangka14@gmail.com)
+[debug] [2024-03-30T15:01:17.422Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-30T15:01:17.423Z] > authorizing via signed-in user (ddiilliiff@gmail.com)
 [info] 
      ######## #### ########  ######## ########     ###     ######  ########
      ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
@@ -18,10 +17,8 @@
 
 You're about to initialize a Firebase project in this directory:
 
-  D:\admin
+  D:\anno\admin-anno
 
-[debug] [2024-02-18T12:52:43.060Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
-[debug] [2024-02-18T12:52:43.061Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
 [info] 
 === Project Setup
 [info] 
@@ -29,11 +26,22 @@ You're about to initialize a Firebase project in this directory:
 [info] You can create multiple project aliases by running firebase use --add, 
 [info] but for now we'll just set up a default project.
 [info] 
-[debug] [2024-02-18T12:52:56.307Z] > refreshing access token with scopes: []
-[debug] [2024-02-18T12:52:56.308Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
-[debug] [2024-02-18T12:52:56.308Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2024-02-18T12:52:58.757Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
-[debug] [2024-02-18T12:52:58.757Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2024-02-18T12:52:58.767Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
-[debug] [2024-02-18T12:53:01.689Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
-[debug] [2024-02-18T12:53:01.689Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[debug] [2024-03-30T15:01:42.099Z] > refreshing access token with scopes: []
+[debug] [2024-03-30T15:01:42.102Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-03-30T15:01:42.102Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-03-30T15:01:46.381Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-03-30T15:01:46.381Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-03-30T15:01:46.404Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-03-30T15:01:51.574Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-03-30T15:01:51.575Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project betesda-ceria (betesda-ceria) 
+[info] 
+=== Hosting Setup
+[debug] [2024-03-30T15:01:58.792Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/betesda-ceria [none]
+[debug] [2024-03-30T15:02:03.884Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/betesda-ceria 200
+[debug] [2024-03-30T15:02:03.884Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/betesda-ceria {"projectId":"betesda-ceria","projectNumber":"950161446972","displayName":"betesda-ceria","name":"projects/betesda-ceria","resources":{"hostingSite":"betesda-ceria","realtimeDatabaseInstance":"betesda-ceria-default-rtdb","storageBucket":"betesda-ceria.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_fe7e9db9-f536-4e2e-b9bd-47d68f0e5cf8"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 

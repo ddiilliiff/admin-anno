@@ -247,6 +247,7 @@ if (document.getElementById("kuis")) {
     getKuisAndDisplay();
   }
 
+  // Menambah data kuis
   if (document.getElementById("kuisForm")) {
     document
       .getElementById("kuisForm")

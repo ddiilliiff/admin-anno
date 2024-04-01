@@ -97,7 +97,7 @@ if (document.getElementById("login")) {
         title: "Logout Berhasil",
         text: "Anda telah berhasil logout.",
         showConfirmButton: false,
-        timer: 10000,
+        timer: 20000,
       });
       // Hapus informasi logout dari session storage
       sessionStorage.removeItem("isLoggedOut");
@@ -136,7 +136,7 @@ if (document.getElementById("dashboard")) {
         title: "Login Berhasil",
         text: "Anda telah berhasil masuk.",
         showConfirmButton: false,
-        timer: 10000,
+        timer: 20000,
       });
     }
   });

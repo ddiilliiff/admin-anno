@@ -70,15 +70,6 @@ if (document.getElementById("login")) {
             password
           );
 
-          // // Tampilkan pesan Sweet Alert bahwa login berhasil
-          // Swal.fire({
-          //   icon: "success",
-          //   title: "Login Berhasil",
-          //   text: "Anda telah berhasil masuk.",
-          //   showConfirmButton: false,
-          //   timer: 3000,
-          // });
-
           // Redirect ke halaman index
           sessionStorage.setItem("loginSuccess", "true");
           window.location.href = "index.html";
@@ -106,7 +97,7 @@ if (document.getElementById("login")) {
         title: "Logout Berhasil",
         text: "Anda telah berhasil logout.",
         showConfirmButton: false,
-        timer: 3000,
+        timer: 10000,
       });
       // Hapus informasi logout dari session storage
       sessionStorage.removeItem("isLoggedOut");
@@ -145,7 +136,7 @@ if (document.getElementById("dashboard")) {
         title: "Login Berhasil",
         text: "Anda telah berhasil masuk.",
         showConfirmButton: false,
-        timer: 3000,
+        timer: 10000,
       });
     }
   });
